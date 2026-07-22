@@ -1,0 +1,46 @@
+# # --- Core pipeline ---
+# langgraph>=0.2.0
+# langgraph-checkpoint-sqlite>=2.0.0
+# langchain-openai>=0.2.0
+# langchain-core>=0.3.0
+# pydantic>=2.0
+# requests>=2.31
+# beautifulsoup4>=4.12
+# python-dotenv>=1.0
+
+# # --- Resume file parsing (extract_candidate_profile) ---
+# pypdf>=4.0
+# python-docx>=1.1
+
+# # --- Streamlit chat UI ---
+# streamlit>=1.40
+
+# # --- FastAPI backend ---
+# fastapi>=0.110
+# uvicorn[standard]>=0.29
+# python-multipart>=0.0.9
+
+# --- Core pipeline ---
+langgraph>=0.2.0
+langgraph-checkpoint-sqlite>=2.0.0
+langchain-openai>=0.2.0
+langchain-core>=0.3.0
+pydantic>=2.0
+requests>=2.31
+beautifulsoup4>=4.12
+python-dotenv>=1.0
+
+# --- Resume file parsing (extract_candidate_profile) ---
+pypdf>=4.0
+python-docx>=1.1
+
+# --- Streamlit chat UI ---
+streamlit>=1.40
+
+# --- MCP server (Claude Desktop / MCP client integration) ---
+mcp>=1.0
+
+# --- FastAPI backend ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9

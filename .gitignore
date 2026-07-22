@@ -1,0 +1,21 @@
+# Secrets / local state
+.env
+*.db
+*.sqlite3
+resume_pipeline_checkpoints.db*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
+# Uploaded/generated resume files (runtime inputs/outputs, not source)
+*.pdf
+*.docx
+generated_resume.md
+
+# Editor
+.vscode/
+.idea/

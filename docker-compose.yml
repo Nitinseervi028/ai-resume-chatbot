@@ -1,0 +1,42 @@
+services:
+  backend:
+    build: .
+    image: ai-resume-tailor:latest
+    command: uvicorn fastapi_backend:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - resume_data:/app/data
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  chat:
+    build: .
+    image: ai-resume-tailor:latest
+    command: streamlit run streamlit_chat_app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"
+    environment:
+      # "backend" resolves via Docker's internal DNS to the backend
+      # service above. The chat container never touches the pipeline,
+      # the checkpoint DB, or any LLM API keys directly anymore -- it's
+      # a pure HTTP client of the backend, which is why it doesn't need
+      # the resume_data volume or .env file that the backend needs.
+      - API_BASE_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  # Shared across both services so the checkpoint database (and its
+  # generation history) is consistent regardless of which service last
+  # touched a given thread_id, and persists across `docker compose down`.
+  resume_data:

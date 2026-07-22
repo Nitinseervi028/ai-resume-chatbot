@@ -1,0 +1,12 @@
+[server]
+# The default "auto" watcher introspects every loaded Python module's
+# __path__ to figure out what to watch for hot-reload. If transformers (or
+# any package with lazy-loaded optional submodules like torchvision-only
+# models) is installed anywhere in the environment -- even if this app
+# never imports it -- that introspection can crash with a
+# ModuleNotFoundError for an unrelated optional dependency.
+#
+# "poll" watches files by polling mtimes instead, sidestepping module
+# introspection entirely. Slightly less instant than "auto", but avoids
+# this class of crash completely.
+fileWatcherType = "poll"

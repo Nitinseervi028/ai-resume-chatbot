@@ -1,0 +1,32 @@
+services:
+  backend:
+    image: seervinitinseervi/ai-resume-tailor:latest
+    command: uvicorn fastapi_backend:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - resume_data_hub_test:/app/data
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  chat:
+    image: seervinitinseervi/ai-resume-tailor:latest
+    command: streamlit run streamlit_chat_app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  resume_data_hub_test:

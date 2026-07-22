@@ -1,0 +1,29 @@
+# VCS / IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Local secrets / state -- never bake these into the image
+.env
+*.db
+*.sqlite3
+resume_pipeline_checkpoints.db*
+
+# Local dev artifacts unrelated to the containerized app
+*.ipynb
+faiss_index/
+.streamlit/
+
+# Sample/uploaded files -- these are runtime inputs, not part of the image
+*.pdf
+*.docx
+generated_resume.md
