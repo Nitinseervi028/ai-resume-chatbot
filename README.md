@@ -23,6 +23,21 @@ streamlit_chat_app.py  ──HTTP──►  fastapi_backend.py  ──►  job_r
 - **`streamlit_chat_app.py`** — a chat interface. Never touches the LLM or
   pipeline directly — it's a pure client of the FastAPI backend.
 
+## Documentation
+
+Full documentation lives in [`docs/`](docs/README.md):
+
+- [Getting Started](docs/getting-started.md): setup, API keys, first resume
+- [Architecture](docs/architecture.md): components, data flow, persistence, design decisions
+- [Pipeline](docs/pipeline.md): every LangGraph node, the state schema, the ATS scoring loop
+- [API Reference](docs/api-reference.md): all endpoints with request/response examples
+- [Chat UI](docs/chat-ui.md): chat commands, sidebar settings, details panel
+- [MCP Server](docs/mcp-server.md): using the pipeline from Claude Desktop / Claude Code
+- [Configuration](docs/configuration.md): environment variables, models, tunables
+- [Deployment](docs/deployment.md): Docker, Compose, Docker Hub, production hardening
+- [Development](docs/development.md): project layout, debugging runs, extending the pipeline
+- [Troubleshooting](docs/troubleshooting.md): common errors and fixes
+
 ## Quick start (Docker — recommended)
 
 ```bash
@@ -70,15 +85,18 @@ tries to introspect them. Safe to remove if you don't hit that issue.
 
 ```
 .
-├── Dockerfile              # shared image for both services
-├── docker-compose.yml      # orchestrates backend + chat, shared checkpoint volume
+├── Dockerfile               # shared image for both services
+├── docker-compose.yml       # orchestrates backend + chat, shared checkpoint volume
+├── docker-compose.hub.yml   # same stack using the prebuilt Docker Hub image
 ├── requirements.txt
-├── .env.example            # copy to .env and fill in
+├── .env.example             # copy to .env and fill in
 ├── .dockerignore
-├── .streamlit/config.toml  # local-dev file watcher fix (see above)
-├── job_resume_langgraph.py # the pipeline
-├── fastapi_backend.py      # HTTP API over the pipeline
-└── streamlit_chat_app.py   # chat UI, pure API client
+├── .streamlit/config.toml   # local-dev file watcher fix (see above)
+├── job_resume_langgraph.py  # the pipeline
+├── fastapi_backend.py       # HTTP API over the pipeline
+├── streamlit_chat_app.py    # chat UI, pure API client
+├── mcp_server.py            # MCP tools for Claude Desktop / Claude Code, pure API client
+└── docs/                    # full documentation
 ```
 
 ## Backend API reference
@@ -90,4 +108,11 @@ tries to introspect them. Safe to remove if you don't hit that issue.
 - `GET /jobs/{job_id}/download` — resume as a downloadable `.md` file
 - `GET /health`
 
-Full interactive docs at `/docs` once the backend is running.
+Full interactive docs at `/docs` once the backend is running. See
+[docs/api-reference.md](docs/api-reference.md) for schemas and examples.
+
+## MCP server
+
+`mcp_server.py` exposes the backend as MCP tools (`generate_tailored_resume`,
+`check_job_status`, `edit_resume`, `chat_about_resume`). Setup is in
+[docs/mcp-server.md](docs/mcp-server.md).
